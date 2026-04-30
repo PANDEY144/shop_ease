@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ShopEase — Fresh Products, Great Prices</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Manrope:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet" />
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- ── NAV ── -->
+  <nav>
+    <div class="nav-inner">
+      <div class="nav-logo">Shop<span>Ease</span></div>
+      <button class="cart-btn" onclick="openCart()">
+        🛒 Cart
+        <span class="cart-count" id="cart-count">0</span>
+      </button>
+    </div>
+  </nav>
+  
+<div class="marquee">
+  <div class="marquee-content">
+    Pre Booking Available • Room Delivery Available in Columbus (₹170+ orders only) • Pre Booking Available • Room Delivery Available in Columbus (₹170+ orders only)
+  </div>
+</div>
+
+  <!-- ── HERO ── -->
+  <div class="hero">
+    <div class="hero-badge">✨ Fresh arrivals every week</div>
+    <h1>Shop What You Love</h1>
+    <p>Browse curated products, add to cart, and get them delivered fast.</p>
+  </div>
+
+  <!-- ── FILTERS ── -->
+  <div class="filters" id="filters-row">
+    <button class="filter-btn active" onclick="setCategory('')">All</button>
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input class="search-input" id="search-input" placeholder="Search products…" oninput="renderProducts()" />
+    </div>
+  </div>
+
+  <!-- ── PRODUCTS ── -->
+  <div class="products-section">
+    <div id="products-grid">
+      <div class="loader">
+        <div class="loader-ring"></div>
+        <p style="color:var(--muted)">Loading products…</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── ORDER HISTORY ── -->
+  <section class="order-history">
+    <div class="order-history-head">
+      <h2>Order History</h2>
+      <p>Enter your name to view ordered items and payment status.</p>
+    </div>
+    <div class="order-history-search">
+      <input id="history-name" placeholder="Enter your full name" />
+      <button onclick="loadOrderHistory()">View Orders</button>
+    </div>
+    <div id="order-history-list" class="order-history-list">
+      <div class="empty-state">
+        <div class="em-icon">📦</div>
+        <p>No order history loaded yet.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SUCCESS ── -->
+  <div id="success-screen">
+    <div class="success-icon">🎉</div>
+    <h2>Order Placed!</h2>
+    <p id="success-msg">Thank you! Your order has been received.<br>We'll contact you shortly.</p>
+    <button class="back-btn" onclick="backToShop()">Continue Shopping</button>
+  </div>
+
+  <!-- ── CART DRAWER ── -->
+  <div class="drawer-overlay" id="overlay" onclick="closeCart()"></div>
+  <div class="drawer" id="cart-drawer">
+    <div class="drawer-header">
+      <h2>Your Cart 🛍</h2>
+      <button class="close-btn" onclick="closeCart()">×</button>
+    </div>
+    <div class="cart-items" id="cart-items-list">
+      <div class="cart-empty">
+        <div class="ce-icon">🛒</div>
+        <p>Your cart is empty</p>
+      </div>
+    </div>
+    <div class="cart-footer">
+      <div class="cart-total-row">
+        <span class="cart-total-label">Total</span>
+        <span class="cart-total-val" id="cart-total">₹0</span>
+      </div>
+      <button class="checkout-btn" id="checkout-btn" onclick="openCheckout()" disabled>Proceed to Checkout →</button>
+    </div>
+  </div>
+
+  <!-- ── CHECKOUT MODAL ── -->
+  <div class="modal-bg" id="checkout-modal">
+    <div class="modal">
+      <h3>Confirm Your Order</h3>
+      <div class="sub">Fill in your details and we'll get it to you!</div>
+      <div class="order-summary" id="order-summary"></div>
+      <div class="field"><label>Full Name *</label><input id="c-name" placeholder="John Doe" /></div>
+      <!-- <div class="field"><label>Email Address *</label><input id="c-email" type="email" placeholder="john@email.com"/></div>
+    <div class="field"><label>Phone Number *</label><input id="c-phone" placeholder="+91 98765 43210"/></div>
+    <div class="field"><label>Delivery Address *</label><textarea id="c-addr" placeholder="House no., Street, City, PIN"></textarea></div>
+    <div class="field"><label>Notes (optional)</label><textarea id="c-notes" placeholder="Any special instructions…"></textarea></div> -->
+      <div class="modal-footer">
+        <button class="btn-ghost" onclick="closeCheckout()">Back</button>
+        <button class="btn-place" onclick="placeOrder()">Place Order 🎉</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast"></div>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script src="logic.js"></script>
+</body>
+</html>

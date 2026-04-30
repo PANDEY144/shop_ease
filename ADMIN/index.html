@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ShopEase — Admin Panel</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+<!-- ── AUTH ── -->
+<div id="auth-screen">
+  <div class="auth-box">
+    <div class="auth-logo">ShopEase</div>
+    <div class="auth-sub">Admin Portal — Secure Login</div>
+    <div class="field"><label>Email</label><input type="email" id="a-email" placeholder="admin@yourshop.com"/></div>
+    <div class="field"><label>Password</label><input type="password" id="a-pass" placeholder="••••••••"/></div>
+    <button class="btn-primary" onclick="doLogin()">Sign In →</button>
+    <div class="auth-err" id="auth-err"></div>
+  </div>
+</div>
+
+<!-- ── APP ── -->
+<div id="app">
+  <header>
+    <div class="logo">ShopEase <span>Admin</span></div>
+    <div class="header-right">
+      <span id="admin-email-display" style="font-size:13px;color:var(--muted)"></span>
+      <button class="btn-sm" onclick="doLogout()">Sign out</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- Stats -->
+    <div class="stats-grid">
+      <div class="stat-card purple"><div class="stat-label">Total Products</div><div class="stat-val" id="stat-products">—</div></div>
+      <div class="stat-card pink"><div class="stat-label">Total Orders</div><div class="stat-val" id="stat-orders">—</div></div>
+      <div class="stat-card green"><div class="stat-label">Revenue (₹)</div><div class="stat-val" id="stat-revenue">—</div></div>
+      <div class="stat-card orange"><div class="stat-label">Low Stock Items</div><div class="stat-val" id="stat-low">—</div></div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('products')">Products</button>
+      <button class="tab" onclick="switchTab('orders')">Orders</button>
+    </div>
+
+    <!-- Products tab -->
+    <div id="tab-products">
+      <div class="section-header">
+        <div class="section-title">Product Inventory</div>
+        <div style="display:flex;gap:12px;align-items:center">
+          <input class="search-bar" id="prod-search" placeholder="Search products…" oninput="renderProducts()"/>
+          <button class="btn-accent" onclick="openAddModal()">+ Add Product</button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Product</th><th>Category</th><th>Price</th><th>Stock</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody id="products-body"><tr><td colspan="6" style="text-align:center;padding:40px"><div class="spinner"></div></td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Orders tab -->
+    <div id="tab-orders" style="display:none">
+      <div class="section-header">
+        <div class="section-title">Customer Orders (Payment Success)</div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Order ID</th><th>Customer</th><th>Items</th><th>Total</th><th>Payment</th><th>Date</th></tr></thead>
+          <tbody id="orders-body"><tr><td colspan="6" style="text-align:center;padding:40px"><div class="spinner"></div></td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- ── Product Modal ── -->
+<div class="modal-bg" id="prod-modal">
+  <div class="modal">
+    <h3 id="modal-title">Add Product</h3>
+    <input type="hidden" id="edit-id"/>
+    <div class="field"><label>Product Name *</label><input id="p-name" placeholder="e.g. Wireless Earbuds Pro"/></div>
+    <div class="field"><label>Category</label><input id="p-cat" placeholder="e.g. Electronics"/></div>
+    <div class="field"><label>Description</label><textarea id="p-desc" placeholder="Short description…"></textarea></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+      <div class="field"><label>Price (₹) *</label><input id="p-price" type="number" min="0" step="0.01" placeholder="0.00"/></div>
+      <div class="field"><label>Stock Quantity *</label><input id="p-qty" type="number" min="0" placeholder="0"/></div>
+    </div>
+    <div class="field"><label>Image URL (optional)</label><input id="p-img" placeholder="https://…"/></div>
+    <div class="modal-footer">
+      <button class="btn-ghost" onclick="closeModal()">Cancel</button>
+      <button class="btn-accent" onclick="saveProduct()">Save Product</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+<script src="script.js"></script>
+</body>
+</html>
