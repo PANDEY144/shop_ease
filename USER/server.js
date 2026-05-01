@@ -3,6 +3,7 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const crypto = require("crypto");
+const path = require("path");
 const Razorpay = require("razorpay");
 const { Resend } = require("resend");
 
@@ -14,8 +15,8 @@ const resend = new Resend('re_Zv7aZ6Yp_BB54R6Kw6TxWuw4VSZGbxwTm');
 
 app.use(cors());
 app.use(express.json());
-app.use(express.static('USER'));
-app.use(express.static('ADMIN'));
+app.use(express.static(__dirname));
+app.use("/admin", express.static(path.join(__dirname, "..", "ADMIN")));
 
 const keyId = process.env.RAZORPAY_KEY_ID;
 const keySecret = process.env.RAZORPAY_KEY_SECRET;

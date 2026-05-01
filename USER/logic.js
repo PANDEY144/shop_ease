@@ -9,7 +9,14 @@
 
     const { createClient } = supabase;
     const db = createClient(SUPABASE_URL, SUPABASE_ANON);
-    const API_BASE_URL = 'http://localhost:4000';
+    const API_BASE_URL = (
+      window.SHOP_EASE_API_BASE_URL ||
+      'https://paying-outward-entrap.ngrok-free.dev'
+    ).replace(/\/$/, '');
+    const API_HEADERS = {
+      'Content-Type': 'application/json',
+      'ngrok-skip-browser-warning': 'true'
+    };
 
     let allProducts = [];
     let cart = JSON.parse(localStorage.getItem('shopease_cart') || '[]');
@@ -309,7 +316,7 @@
       try {
         const createOrderRes = await fetch(`${API_BASE_URL}/api/create-order`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: API_HEADERS,
           body: JSON.stringify({
             amount: totalInPaise,
             currency: 'INR',
@@ -335,7 +342,7 @@
             try {
               const verifyRes = await fetch(`${API_BASE_URL}/api/verify-payment`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: API_HEADERS,
                 body: JSON.stringify({
                   razorpay_order_id: response.razorpay_order_id,
                   razorpay_payment_id: response.razorpay_payment_id,
@@ -383,7 +390,7 @@
                 
                 await fetch(`${API_BASE_URL}/api/send-email`, {
                   method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
+                  headers: API_HEADERS,
                   body: JSON.stringify({
                     to: 'pamdeygaurav911@gmail.com',
                     subject: `New Order Placed by ${name}`,
